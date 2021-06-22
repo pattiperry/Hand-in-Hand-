@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hand in Hand", "Hand in Hand\Hand in Hand.csproj", "{3F7BD291-6966-470D-9189-5EF3518A169E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F7BD291-6966-470D-9189-5EF3518A169E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F7BD291-6966-470D-9189-5EF3518A169E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F7BD291-6966-470D-9189-5EF3518A169E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F7BD291-6966-470D-9189-5EF3518A169E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {96F5C8DA-DC35-4051-B364-FA9458671BF3}
+	EndGlobalSection
+EndGlobal
