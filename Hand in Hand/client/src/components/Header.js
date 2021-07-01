@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <NavbarBrand tag={RRNavLink} to="/">Hand In Hand</NavbarBrand>
+        
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
@@ -38,7 +38,7 @@ export default function Header() {
                   <NavLink tag={RRNavLink} to="/" onClick={toggle}>Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={RRNavLink} to="/organization" onClick={toggle}>Organizations</NavLink>
+                  <NavLink tag={RRNavLink} to="/organization/details" onClick={toggle}>My Organization</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink tag={RRNavLink} to="/opportunity" onClick={toggle}>Opportunities</NavLink>

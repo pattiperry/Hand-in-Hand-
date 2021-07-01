@@ -47,8 +47,8 @@ export function OrganizationProvider(props) {
   const getToken = () => firebase.auth().currentUser.getIdToken();
 
   const getOrganization = (firebaseUserId) => {
-    return getToken().then((token) =>
-      fetch(`${apiUrl}/${firebaseUserId}`, {
+      return getToken().then((token) =>
+        fetch(`${apiUrl}/${firebaseUserId}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`
@@ -56,6 +56,7 @@ export function OrganizationProvider(props) {
       }).then(resp => resp.json()));
   };
 
+  
   const saveOrganization = (organization) => {
     return getToken().then((token) =>
       fetch(apiUrl, {
@@ -68,8 +69,20 @@ export function OrganizationProvider(props) {
       }).then(resp => resp.json()));
   };
 
+  const editOrganization = (organization) => {
+    return getToken().then((token) => 
+      fetch(`${apiUrl}/${organization.Id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(organization)
+      })
+    )}
+
   return (
-    <OrganizationContext.Provider value={{ isLoggedIn, login, logout, register, getToken }}>
+    <OrganizationContext.Provider value={{ isLoggedIn, login, logout, register, getToken, getOrganization, editOrganization}}>
       {isFirebaseReady
         ? props.children
         : <Spinner className="app-spinner dark"/>}

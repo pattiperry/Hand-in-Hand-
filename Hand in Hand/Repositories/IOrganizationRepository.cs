@@ -11,5 +11,6 @@ namespace Hand_in_Hand.Repositories
         Organization GetByFirebaseUserId(string firebaseUserId);
 
         void Add(Organization organization);
+        void Edit(Organization organization);
     }
 }

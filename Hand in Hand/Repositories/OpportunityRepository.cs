@@ -1,6 +1,7 @@
 ﻿using Hand_in_Hand.Models;
 using Hand_in_Hand.Utils;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace Hand_in_Hand.Repositories
 {
     public class OpportunityRepository: BaseRepository, IOpportunityRepository
     {
-        public PostRepository(IConfiguration config) : base(config) { }
-        public List<Post> GetAllPublishedPosts()
+        public OpportunityRepository(IConfiguration config) : base(config) { }
+        public List<Opportunity> GetAll()
         {
             using (var conn = Connection)
             {
@@ -19,38 +20,29 @@ namespace Hand_in_Hand.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                       SELECT p.Id, p.Title, p.Content, 
-                              p.ImageLocation AS HeaderImage,
-                              p.CreateDateTime, p.PublishDateTime, p.IsApproved,
-                              p.CategoryId, p.UserProfileId,
-                              c.[Name] AS CategoryName,
-                              u.FirebaseUserId, u.FirstName, u.LastName, u.DisplayName, 
-                              u.Email, u.CreateDateTime, u.ImageLocation AS AvatarImage,
-                              u.UserTypeId, 
-                              ut.[Name] AS UserTypeName
-                         FROM Post p
-                              LEFT JOIN Category c ON p.CategoryId = c.id
-                              LEFT JOIN UserProfile u ON p.UserProfileId = u.id
-                              LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                        WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME()
-                        ORDER BY PublishDateTime DESC";
+                      SELECT o.Id, o.Title, o.Content, 
+                              o.Location, o.OrganizationId, o.Type, o.SuitableForGroups, o.SuitableForIndividuals, o.SuitableForAdultsOnly, o.SuitableForAllAges, o.SuitableForParticipateFromHome,
+                              o.OtherInfo, oz.Id as OrganizationId, oz.OrganizationName
+                         FROM Opportunity o
+                              LEFT JOIN Organization oz ON o.OrganizationId = oz.id";
+
                     var reader = cmd.ExecuteReader();
 
-                    var posts = new List<Post>();
+                    var opportunities = new List<Opportunity>();
 
                     while (reader.Read())
                     {
-                        posts.Add(NewPostFromReader(reader));
+                        opportunities.Add(NewOpportunityFromReader(reader));
                     }
 
                     reader.Close();
 
-                    return posts;
+                    return opportunities;
                 }
             }
         }
-        // Method to retrieve details of post.
-        public Post GetById(int id)
+        // Method to retrieve details of opportunity.
+        public Opportunity GetById(int id)
         {
             // Define a variable to identify the database connection
             // ("Connection" comes from the BaseRepository.cs)
@@ -62,145 +54,66 @@ namespace Hand_in_Hand.Repositories
                 {
                     // Instantiate a variable called cmd to use as short-hand for defining the SQL query.
                     cmd.CommandText = @"
-                       SELECT p.Id, p.Title, p.Content, 
-                              p.ImageLocation AS HeaderImage,
-                              p.CreateDateTime, p.PublishDateTime, p.IsApproved,
-                              p.CategoryId, p.UserProfileId,
-                              c.[Name] AS CategoryName,
-                              u.FirebaseUserId, u.FirstName, u.LastName, u.DisplayName, 
-                              u.Email, u.CreateDateTime, u.ImageLocation AS AvatarImage,
-                              u.UserTypeId, 
-                              ut.[Name] AS UserTypeName,
-                              pt.Id as PostTagId,
-                              t.Id AS TagId, t.[Name] AS TagName
-                         FROM Post p
-                              LEFT JOIN Category c ON p.CategoryId = c.id
-                              LEFT JOIN UserProfile u ON p.UserProfileId = u.id
-                              LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                              LEFT JOIN PostTag pt ON p.Id = pt.PostId
-                              LEFT JOIN Tag t ON pt.TagId = t.Id
-                        WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME()
-                              AND p.id = @id";
+                       SELECT o.Id, o.Title, o.Content, 
+                              o.Location, o.OrganizationId, o.Type, o.SuitableForGroups, o.SuitableForIndividuals, o.SuitableForAdultsOnly, o.SuitableForAllAges, o.SuitableForParticipateFromHome,
+                              o.OtherInfo, oz.Id as OrganizationId, oz.OrganizationName
+                         FROM Opportunity o
+                              LEFT JOIN Organization oz ON o.OrganizationId = oz.id
+                        WHERE o.id = @id";
                     // Attach the UserId parameter to the SQL Query using SQLConnection provided methods
                     cmd.Parameters.AddWithValue("@id", id);
                     // Execute the Query
                     var reader = cmd.ExecuteReader();
 
-                    Post post = null;
+                    Opportunity opportunity = null;
 
                     while (reader.Read())
                     {
-                        if (post == null)
+                        if (opportunity == null)
                         {
-                            post = NewPostFromReader(reader);
-                        }
-
-                        if (DbUtils.IsNotDbNull(reader, "TagId"))
-                        {
-                            post.Tags.Add(new Tag()
-                            {
-                                Id = DbUtils.GetInt(reader, "TagId"),
-                                Name = DbUtils.GetString(reader, "TagName"),
-                                PostTagId = DbUtils.GetInt(reader, "PostTagId")
-                            });
-                        }
+                            opportunity = NewOpportunityFromReader(reader);
+                        } 
                     }
 
                     reader.Close();
 
-                    return post;
+                    return opportunity;
                 }
             }
         }
 
-        // Define a public method to retrieve Posts from the database that correspond to a
-        // particular userId and return a list of posts.
-        public List<Post> GetPostsByUserId(int UserId)
+        
+        
+        public void Add(Opportunity opportunity)
         {
-            // Define a variable to identify the database connection
-            // ("Connection" comes from the BaseRepository.cs)
-            using (var conn = Connection)
-            {
-                // Open the connection to the database.
-                conn.Open();
-                // Instantiate a variable called cmd to use as short-hand for defining the SQL query.
-                using (var cmd = conn.CreateCommand())
-                {
-                    // Define the SQL query. Select Post, Category, UserProfile, and UserType.
-                    // Join Category on Post via CategoryId
-                    // Join UserProfile on Post via UserProfileId
-                    // Join UserType on UserProfile via UserTypeId
-                    // Only Select Entries WHERE the UserId = the current user's Id
-                    // Order by descending (chronological) 
-                    cmd.CommandText = @"SELECT p.Id, p.Title, p.Content, 
-                              p.ImageLocation AS HeaderImage,
-                              p.CreateDateTime, p.PublishDateTime, p.IsApproved,
-                              p.CategoryId, p.UserProfileId,
-                              c.[Name] AS CategoryName,
-                              u.FirebaseUserId, u.FirstName, u.LastName, u.DisplayName, 
-                              u.Email, u.CreateDateTime, u.ImageLocation AS AvatarImage,
-                              u.UserTypeId, 
-                              ut.[Name] AS UserTypeName
-                         FROM Post p
-                              LEFT JOIN Category c ON p.CategoryId = c.id
-                              LEFT JOIN UserProfile u ON p.UserProfileId = u.id
-                              LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                        WHERE u.Id = @id AND IsApproved = 1 AND PublishDateTime < SYSDATETIME()
-                        ORDER BY p.CreateDateTime DESC";
-
-                    // Attach the UserId parameter to the SQL Query using SQLConnection provided methods
-                    cmd.Parameters.AddWithValue("@id", UserId);
-
-                    // Execute the Query
-                    var reader = cmd.ExecuteReader();
-
-                    // Instantiate a new list of posts
-                    List<Post> posts = new List<Post>();
-
-                    // While there are new rows of entries in the reader,
-                    while (reader.Read())
-                    {
-                        // Use the defined method "NewPostFromReader" (defined below)
-                        // to add a new Post object to the List of Posts
-                        posts.Add(NewPostFromReader(reader));
-                    }
-
-                    // Close the connection to the database
-                    reader.Close();
-
-                    // return the list of posts
-                    return posts;
-                }
-            }
-        }
-
-        public void Add(Post post)
-        {
-            post.CreateDateTime = DateTime.Now;
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERT INTO Post (
-                            Title, Content, ImageLocation, CreateDateTime, PublishDateTime,
-                            IsApproved, CategoryId, UserProfileId )
+                        INSERT INTO OPPORTUNITY (
+                            Title, Content, Location, OrganizationId, Type,
+                            SuitableForGroups, SuitableForIndividuals, SuitableForAdultsOnly, SuitableForAllAges, SuitableForParticipateFromHome, OtherInfo )
                         OUTPUT INSERTED.ID
                         VALUES (
-                            @Title, @Content, @ImageLocation, @CreateDateTime, @PublishDateTime,
-                            @IsApproved, @CategoryId, @UserProfileId )";
-                    cmd.Parameters.AddWithValue("@Title", post.Title);
-                    cmd.Parameters.AddWithValue("@Content", post.Content);
-                    cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
-                    cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
-                    cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
-                    cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
-                    cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
-                    cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+                            @Title, @Content, @Location, @OrganizationId, @Type,
+                            @SuitableForGroups, @SuitableForIndividuals, @SuitableForAdultsOnly, @SuitableForAllAges, @SuitableForParticipateFromHome, @OtherInfo )";
+                    cmd.Parameters.AddWithValue("@Title", opportunity.Title);
+                    cmd.Parameters.AddWithValue("@Content", opportunity.Content);
+                    cmd.Parameters.AddWithValue("@Location", DbUtils.ValueOrDBNull(opportunity.Location));
+                    cmd.Parameters.AddWithValue("@OrganizationId", DbUtils.ValueOrDBNull(opportunity.OrganizationId));
+                    cmd.Parameters.AddWithValue("@Type", DbUtils.ValueOrDBNull(opportunity.Type));
+                    cmd.Parameters.AddWithValue("@SuitableForGroups", DbUtils.ValueOrDBNull(opportunity.SuitableForGroups));
+                    cmd.Parameters.AddWithValue("@SuitableForIndividuals", DbUtils.ValueOrDBNull(opportunity.SuitableForIndividuals));
+                    cmd.Parameters.AddWithValue("@SuitableForAdultsOnly", DbUtils.ValueOrDBNull(opportunity.SuitableForAdultsOnly));
+                    cmd.Parameters.AddWithValue("@SuitableForAllAges", DbUtils.ValueOrDBNull(opportunity.SuitableForAllAges));
+                    cmd.Parameters.AddWithValue("@SuitableForParticipateFromHome", DbUtils.ValueOrDBNull(opportunity.SuitableForParticipateFromHome));
+                    cmd.Parameters.AddWithValue("@OtherInfo", DbUtils.ValueOrDBNull(opportunity.OtherInfo));
+                    
 
-                    post.Id = (int)cmd.ExecuteScalar();
-                    //return post;
+                    opportunity.Id = (int)cmd.ExecuteScalar();
+                    //return opportunity;
                 }
             }
         }
@@ -214,8 +127,8 @@ namespace Hand_in_Hand.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            DELETE FROM PostTag WHERE PostTag.PostId = @Id;
-                            DELETE FROM Post WHERE Post.Id = @id
+                           
+                            DELETE FROM Opportunity WHERE Opportunity.Id = @id
                         ";
 
                     cmd.Parameters.AddWithValue("@id", id);
@@ -225,30 +138,40 @@ namespace Hand_in_Hand.Repositories
             }
         }
 
-        public void Edit(Post post)
+        public void Edit(Opportunity opportunity)
         {
             using (var conn = Connection)
             {
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"UPDATE Post
+                    cmd.CommandText = @"UPDATE Opportunity
                                         SET Title = @title,
                                             Content = @content,
-                                            CategoryId = @categoryId,
-                                            ImageLocation = @imageLocation,
-                                            PublishDateTime = @publishDate,
-                                            IsApproved = @isApproved
+                                            Location = @location,
+                                            Type = @type,
+                                            SuitableForGroups = @suitableForGroups,
+                                            SuitableForIndividuals =@suitableForIndividuals,
+                                            SuitableForAdultsOnly =@suitableForAdultsOnly,
+                                            SuitableForAllAges =@suitableForAllAges,
+                                            SuitableForParticipateFromHome =@suitableForParticipateFromHome,
+                                            OrganizationId = @organizationId,
+                                            OtherInfo = @otherInfo
                                         WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("@id", post.Id);
-                    cmd.Parameters.AddWithValue("@title", post.Title);
-                    cmd.Parameters.AddWithValue("@content", post.Content);
-                    cmd.Parameters.AddWithValue("@categoryId", post.CategoryId);
-                    cmd.Parameters.AddWithValue("@imageLocation", post.ImageLocation);
-                    cmd.Parameters.AddWithValue("@publishDate", post.PublishDateTime);
-                    cmd.Parameters.Add("@isApproved", SqlDbType.Bit).Value = post.IsApproved;
-
+                    cmd.Parameters.AddWithValue("@id", opportunity.Id);
+                    cmd.Parameters.AddWithValue("@title", opportunity.Title);
+                    cmd.Parameters.AddWithValue("@content", opportunity.Content);
+                    cmd.Parameters.AddWithValue("@location", opportunity.Location);
+                    cmd.Parameters.AddWithValue("@type", opportunity.Type);
+                    cmd.Parameters.AddWithValue("@suitableForGroups", opportunity.SuitableForGroups);
+                    cmd.Parameters.AddWithValue("@suitableForIndividuals", opportunity.SuitableForIndividuals);
+                    cmd.Parameters.AddWithValue("@suitableForAdultsOnly", opportunity.SuitableForAdultsOnly);
+                    cmd.Parameters.AddWithValue("@suitableForAllAges", opportunity.SuitableForAllAges);
+                    cmd.Parameters.AddWithValue("@suitableForParticipateFromHome", opportunity.SuitableForParticipateFromHome);
+                    cmd.Parameters.AddWithValue("@organizationId", opportunity.OrganizationId);
+                    cmd.Parameters.AddWithValue("@otherInfo", opportunity.OtherInfo);
+                    
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -256,23 +179,29 @@ namespace Hand_in_Hand.Repositories
 
         private Opportunity NewOpportunityFromReader(SqlDataReader reader)
         {
-            return new Opportunity()
+            var opportunity = new Opportunity();
             {
-                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                Title = DbUtils.GetNullableString(reader, "Title"),
-                Content = DbUtils.GetNullableString(reader, "Content"),
-                Location = DbUtils.GetNullableString(reader, "Location"),
-                OpportunityTypeId = reader.GetInt32(reader.GetOrdinal("OpportunityTypeId")),
-                SuitableForId = reader.GetInt32(reader.GetOrdinal("SuitableForId")),
-                OtherInfo = DbUtils.GetNullableString(reader, "OtherInfo"),
-                OrganizationId = reader.GetInt32(reader.GetOrdinal("OrganizationId")),
-                Organization = new Organization()
-                {
-                    Id = reader.GetInt32(reader.GetOrdinal("OrganizationId")),
-                    Name = reader.GetString(reader.GetOrdinal("CategoryName"))
-                },
-                
+
+                opportunity.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+            opportunity.Title = reader.GetString(reader.GetOrdinal("Title"));
+            opportunity.Content = reader.GetString(reader.GetOrdinal("Content"));
+            opportunity.Location = DbUtils.GetNullableString(reader, "Location");
+            opportunity.Type = reader.GetBoolean(reader.GetOrdinal("Type"));
+            opportunity.SuitableForGroups = reader.GetBoolean(reader.GetOrdinal("SuitableForGroups"));
+            opportunity.SuitableForIndividuals = reader.GetBoolean(reader.GetOrdinal("SuitableForIndividuals"));
+            opportunity.SuitableForAdultsOnly = reader.GetBoolean(reader.GetOrdinal("SuitableForAdultsOnly"));
+            opportunity.SuitableForAllAges = reader.GetBoolean(reader.GetOrdinal("SuitableForAllAges"));
+            opportunity.SuitableForParticipateFromHome = reader.GetBoolean(reader.GetOrdinal("SuitableForParticipateFromHome"));
+            opportunity.OtherInfo = DbUtils.GetNullableString(reader, "OtherInfo");
+            opportunity.OrganizationId = (int)DbUtils.GetNullableInt(reader, "OrganizationId");
+            opportunity.organization = new Organization()
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("OrganizationId")),
+                OrganizationName = reader.GetString(reader.GetOrdinal("OrganizationName"))
             };
+
+            return opportunity;
+        }
         }
     }
 }

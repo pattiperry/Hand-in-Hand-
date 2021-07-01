@@ -29,6 +29,8 @@ namespace Hand_in_Hand
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IOrganizationRepository, OrganizationRepository>();
+            services.AddTransient<IOpportunityRepository, OpportunityRepository>();
+           
 
             services.AddControllers();
 

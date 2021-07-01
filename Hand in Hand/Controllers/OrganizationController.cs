@@ -44,8 +44,10 @@ namespace Hand_in_Hand.Controllers
 
         // PUT api/<OrganizationController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(Organization organization)
         {
+            _organizationRepository.Edit(organization);
+            return NoContent();
         }
 
         // DELETE api/<OrganizationController>/5

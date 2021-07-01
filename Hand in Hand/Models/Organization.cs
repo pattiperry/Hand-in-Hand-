@@ -12,7 +12,7 @@ namespace Hand_in_Hand.Models
         public int Id { get; set; }
         [Required]
         public string FirebaseUserId { get; set; }
-        public string Name { get; set; }
+        public string OrganizationName { get; set; }
         public string Url { get; set; }
         public string Location { get; set; }
         public string Phone { get; set; }

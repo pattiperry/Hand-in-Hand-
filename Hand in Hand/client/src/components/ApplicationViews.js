@@ -4,7 +4,10 @@ import Login from "./Login";
 import Register from "./Register";
 import Hello from "./HomePage";
 import { OrganizationContext } from "../providers/OrganizationProvider";
-
+import { OrganizationDetail } from "../components/organization/OrganizationDetail";
+import { OpportunityForm } from "../components/opportunity/OpportunityForm"; 
+import { OpportunityList } from "../components/opportunity/OpportunityList";
+import { ConfirmDelete } from "../components/opportunity/ConfirmDelete";
 
  export default function ApplicationViews() {
     // import the isLoggedIn state variable from the OrganizationContext
@@ -29,6 +32,33 @@ import { OrganizationContext } from "../providers/OrganizationProvider";
         <Route path="/register">
           <Register />
         </Route>
+
+{/*----------------Organization Routes----------------- */}
+        <Route path="/organization/details" exact>
+          {isLoggedIn ? <OrganizationDetail /> : <Redirect to="/login"/>}
+        </Route>
+
+        <Route path="/organization/edit" exact>
+          {isLoggedIn ? <OrganizationDetail /> : <Redirect to="/login"/>}
+        </Route>
+
+{/*----------------Opportunity Routes----------------- */}
+        <Route path="/opportunity/add" exact>
+          {isLoggedIn ? <OpportunityForm /> : <Redirect to="/login"/>}
+        </Route>
+
+        <Route path="/opportunity" exact>
+          {isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
+        </Route>
+
+        <Route path="/opportunity/edit/:opportunityId(\d+)" exact>
+          {isLoggedIn ? <OpportunityForm /> : <Redirect to="/login"/>}
+        </Route>
+
+        <Route path="/opportunity/delete/:opportunityId(\d+)" exact>
+          {isLoggedIn ? <ConfirmDelete /> : <Redirect to="/login"/>}
+        </Route>
+
     </Switch>
 </main>
 );
