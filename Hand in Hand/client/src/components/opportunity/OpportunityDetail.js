@@ -17,7 +17,14 @@ export const OpportunityDetails = () => {
       .then(setDetailOpportunity)
     }, [])
 
-    const loggedInOrganization = JSON.parse(sessionStorage.getItem("organization")).id;
+    const loggedInOrganization = 0
+
+    if(sessionStorage.getItem("organization") !== null){
+      const loggedInOrganization = JSON.parse(sessionStorage.getItem("organization")).id;
+    } 
+      
+    
+    
     
       
     return (

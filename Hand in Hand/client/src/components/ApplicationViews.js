@@ -9,8 +9,10 @@ import { OpportunityForm } from "../components/opportunity/OpportunityForm";
 import { OpportunityList } from "../components/opportunity/OpportunityList";
 import { ConfirmDelete } from "../components/opportunity/ConfirmDelete";
 import { OpportunityDetails } from "./opportunity/OpportunityDetail";
+import { OrganizationList } from "./organization/OrganizationList";
+import { OpportunitySearch} from "../components/opportunity/OpportunitySearch";
 
- export default function ApplicationViews() {
+export default function ApplicationViews() {
     // import the isLoggedIn state variable from the OrganizationContext
     const { isLoggedIn } = useContext(OrganizationContext);
  
@@ -43,13 +45,18 @@ import { OpportunityDetails } from "./opportunity/OpportunityDetail";
           {isLoggedIn ? <OrganizationDetail /> : <Redirect to="/login"/>}
         </Route>
 
+        <Route path="/organization" exact>
+          {!isLoggedIn ? <OrganizationList /> : <Redirect to="/login"/>}
+        </Route>
+
 {/*----------------Opportunity Routes----------------- */}
         <Route path="/opportunity/add" exact>
           {isLoggedIn ? <OpportunityForm /> : <Redirect to="/login"/>}
         </Route>
 
         <Route path="/opportunity" exact>
-          {isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
+          <OpportunitySearch />
+          <OpportunityList /> 
         </Route>
 
         {/* <Route path="/opportunity" exact>
@@ -65,12 +72,12 @@ import { OpportunityDetails } from "./opportunity/OpportunityDetail";
         </Route>
         
         <Route path="/opportunity/detail/:opportunityId(\d+)" exact>
-          {isLoggedIn ? <OpportunityDetails /> : <Redirect to="/login"/>}
+          {<OpportunityDetails /> }
         </Route>
 
-        {/* <Route path="/opportunity/opportunitylist" exact>
+        <Route path="/opportunity/opportunitylist" exact>
           {!isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
-        </Route> */}
+        </Route>
 
     </Switch>
 </main>

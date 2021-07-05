@@ -18,6 +18,7 @@ export default function Login() {
   };
 
   return (
+    <>
     <Form onSubmit={loginSubmit}>
       <fieldset>
         <FormGroup>
@@ -36,5 +37,9 @@ export default function Login() {
         </em>
       </fieldset>
     </Form>
+    <Button variant="success" type="submit" onClick={()=> {history.push("/opportunity/opportunitylist")}}>
+    VOLUNTEER
+ </Button>
+ </>
   );
 }

@@ -67,6 +67,7 @@ export default function Header() {
                 <NavItem>
                   <NavLink tag={RRNavLink} to="/register">Register</NavLink>
                 </NavItem>
+                
               </>
             }
           </Nav>
