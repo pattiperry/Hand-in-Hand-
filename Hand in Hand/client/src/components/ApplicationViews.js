@@ -9,6 +9,7 @@ import { OpportunityForm } from "../components/opportunity/OpportunityForm";
 import { OpportunityList } from "../components/opportunity/OpportunityList";
 import { ConfirmDelete } from "../components/opportunity/ConfirmDelete";
 import { OpportunityDetails } from "./opportunity/OpportunityDetail";
+
  export default function ApplicationViews() {
     // import the isLoggedIn state variable from the OrganizationContext
     const { isLoggedIn } = useContext(OrganizationContext);
@@ -51,6 +52,10 @@ import { OpportunityDetails } from "./opportunity/OpportunityDetail";
           {isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
         </Route>
 
+        {/* <Route path="/opportunity" exact>
+          {isLoggedIn ? <OpportunitySearch /> : <Redirect to="/login"/>}
+        </Route> */}
+
         <Route path="/opportunity/edit/:opportunityId(\d+)" exact>
           {isLoggedIn ? <OpportunityForm /> : <Redirect to="/login"/>}
         </Route>
@@ -62,6 +67,10 @@ import { OpportunityDetails } from "./opportunity/OpportunityDetail";
         <Route path="/opportunity/detail/:opportunityId(\d+)" exact>
           {isLoggedIn ? <OpportunityDetails /> : <Redirect to="/login"/>}
         </Route>
+
+        {/* <Route path="/opportunity/opportunitylist" exact>
+          {!isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
+        </Route> */}
 
     </Switch>
 </main>

@@ -3,8 +3,8 @@ import { OpportunityContext } from "../../providers/OpportunityProvider"
 import { useHistory, useParams } from 'react-router-dom';
 import  Button  from 'react-bootstrap/Button';
 import  Form  from 'react-bootstrap/Form';
-
 import "./Opportunity.css";
+
 
 export const OpportunityForm = () => {
     const { addOpportunity, getOpportunityById, editOpportunity } = useContext(OpportunityContext);

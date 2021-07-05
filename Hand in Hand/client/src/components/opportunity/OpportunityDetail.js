@@ -4,6 +4,7 @@ import {useHistory} from "react-router-dom";
 import  Button  from 'react-bootstrap/Button';
 import  Card  from 'react-bootstrap/Card';
 import { OpportunityContext } from "../../providers/OpportunityProvider"
+import "./Opportunity.css";
 
 export const OpportunityDetails = () => {
     const history = useHistory();
@@ -45,12 +46,12 @@ export const OpportunityDetails = () => {
                 </Card.Body>
 
                 <div className="button-container">
-      {loggedInOrganization
+      {loggedInOrganization === detailOpportunity.organizationId
         ? <Button className="button btn btn-sm" onClick={() => {history.push(`/opportunity/edit/${detailOpportunity.id}`)}}>Edit</Button> 
         : <div></div>
       }
        
-      {loggedInOrganization 
+      {loggedInOrganization === detailOpportunity.organizationId
       ? <Button className="button btn btn-sm" onClick={() => {history.push(`/opportunity/delete/${detailOpportunity.id}`)}}>Delete</Button> 
       : <div></div>
       }
