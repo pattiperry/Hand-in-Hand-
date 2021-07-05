@@ -22,9 +22,10 @@ namespace Hand_in_Hand.Repositories
                     cmd.CommandText = @"
                       SELECT o.Id, o.Title, o.Content, 
                               o.Location, o.OrganizationId, o.Type, o.SuitableForGroups, o.SuitableForIndividuals, o.SuitableForAdultsOnly, o.SuitableForAllAges, o.SuitableForParticipateFromHome,
-                              o.OtherInfo, oz.Id as OrganizationId, oz.OrganizationName
+                              o.OtherInfo, oz.Id as OrganizationId, oz.OrganizationName, oz.ContactPerson, oz.Url, oz.Phone, oz.Email
                          FROM Opportunity o
-                              LEFT JOIN Organization oz ON o.OrganizationId = oz.id";
+                              LEFT JOIN Organization oz ON o.OrganizationId = oz.id
+                              ";
 
                     var reader = cmd.ExecuteReader();
 
@@ -56,7 +57,7 @@ namespace Hand_in_Hand.Repositories
                     cmd.CommandText = @"
                        SELECT o.Id, o.Title, o.Content, 
                               o.Location, o.OrganizationId, o.Type, o.SuitableForGroups, o.SuitableForIndividuals, o.SuitableForAdultsOnly, o.SuitableForAllAges, o.SuitableForParticipateFromHome,
-                              o.OtherInfo, oz.Id as OrganizationId, oz.OrganizationName
+                              o.OtherInfo, oz.Id as OrganizationId, oz.OrganizationName, oz.ContactPerson, oz.Url, oz.Phone, oz.Email
                          FROM Opportunity o
                               LEFT JOIN Organization oz ON o.OrganizationId = oz.id
                         WHERE o.id = @id";
@@ -182,7 +183,7 @@ namespace Hand_in_Hand.Repositories
             var opportunity = new Opportunity();
             {
 
-                opportunity.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+            opportunity.Id = reader.GetInt32(reader.GetOrdinal("Id"));
             opportunity.Title = reader.GetString(reader.GetOrdinal("Title"));
             opportunity.Content = reader.GetString(reader.GetOrdinal("Content"));
             opportunity.Location = DbUtils.GetNullableString(reader, "Location");
@@ -197,7 +198,12 @@ namespace Hand_in_Hand.Repositories
             opportunity.organization = new Organization()
             {
                 Id = reader.GetInt32(reader.GetOrdinal("OrganizationId")),
-                OrganizationName = reader.GetString(reader.GetOrdinal("OrganizationName"))
+                OrganizationName = reader.GetString(reader.GetOrdinal("OrganizationName")),
+                Url = DbUtils.GetString(reader, "Url"),
+                Location = DbUtils.GetString(reader, "Location"),
+                Phone = DbUtils.GetString(reader, "Phone"),
+                Email = DbUtils.GetString(reader, "Email"),
+                ContactPerson = DbUtils.GetString(reader, "ContactPerson")
             };
 
             return opportunity;

@@ -132,6 +132,7 @@ namespace Hand_in_Hand.Utils
         }
         public static string GetNullableString(SqlDataReader reader, string column)
         {
+            
             var ordinal = reader.GetOrdinal(column);
             if (reader.IsDBNull(ordinal))
             {

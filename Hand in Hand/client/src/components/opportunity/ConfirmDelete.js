@@ -1,7 +1,7 @@
 import React, { useContext} from "react";
 import {useParams, useHistory } from "react-router-dom";
 import {OpportunityContext} from "../../providers/OpportunityProvider"
-
+import "./Opportunity.css";
 
 
 export const ConfirmDelete = () => {

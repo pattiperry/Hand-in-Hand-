@@ -10,6 +10,7 @@ export function OrganizationProvider(props) {
 
   const organization = sessionStorage.getItem("organization");
   const [isLoggedIn, setIsLoggedIn] = useState(organization != null);
+  const [ organizations, setOrganizations] = useState([]);
 
   const [isFirebaseReady, setIsFirebaseReady] = useState(false);
   useEffect(() => {
@@ -56,7 +57,17 @@ export function OrganizationProvider(props) {
       }).then(resp => resp.json()));
   };
 
-  
+  const getAllOrganizations = () => {
+    return fetch(apiUrl, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json" 
+            }
+        })
+      .then(resp => resp.json())
+      .then(setOrganizations);
+  };
+
   const saveOrganization = (organization) => {
     return getToken().then((token) =>
       fetch(apiUrl, {
@@ -82,7 +93,7 @@ export function OrganizationProvider(props) {
     )}
 
   return (
-    <OrganizationContext.Provider value={{ isLoggedIn, login, logout, register, getToken, getOrganization, editOrganization}}>
+    <OrganizationContext.Provider value={{ isLoggedIn, login, logout, register, getToken, getOrganization, editOrganization, getAllOrganizations, organizations, setOrganizations}}>
       {isFirebaseReady
         ? props.children
         : <Spinner className="app-spinner dark"/>}

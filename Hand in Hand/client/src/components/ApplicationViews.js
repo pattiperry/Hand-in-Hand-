@@ -8,8 +8,11 @@ import { OrganizationDetail } from "../components/organization/OrganizationDetai
 import { OpportunityForm } from "../components/opportunity/OpportunityForm"; 
 import { OpportunityList } from "../components/opportunity/OpportunityList";
 import { ConfirmDelete } from "../components/opportunity/ConfirmDelete";
+import { OpportunityDetails } from "./opportunity/OpportunityDetail";
+import { OrganizationList } from "./organization/OrganizationList";
+import { OpportunitySearch} from "../components/opportunity/OpportunitySearch";
 
- export default function ApplicationViews() {
+export default function ApplicationViews() {
     // import the isLoggedIn state variable from the OrganizationContext
     const { isLoggedIn } = useContext(OrganizationContext);
  
@@ -42,13 +45,18 @@ import { ConfirmDelete } from "../components/opportunity/ConfirmDelete";
           {isLoggedIn ? <OrganizationDetail /> : <Redirect to="/login"/>}
         </Route>
 
+        <Route path="/organization" exact>
+          {!isLoggedIn ? <OrganizationList /> : <Redirect to="/login"/>}
+        </Route>
+
 {/*----------------Opportunity Routes----------------- */}
         <Route path="/opportunity/add" exact>
           {isLoggedIn ? <OpportunityForm /> : <Redirect to="/login"/>}
         </Route>
 
         <Route path="/opportunity" exact>
-          {isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
+          <OpportunitySearch />
+          <OpportunityList /> 
         </Route>
 
         <Route path="/opportunity/edit/:opportunityId(\d+)" exact>
@@ -58,6 +66,12 @@ import { ConfirmDelete } from "../components/opportunity/ConfirmDelete";
         <Route path="/opportunity/delete/:opportunityId(\d+)" exact>
           {isLoggedIn ? <ConfirmDelete /> : <Redirect to="/login"/>}
         </Route>
+        
+        <Route path="/opportunity/detail/:opportunityId(\d+)" exact>
+          {<OpportunityDetails /> }
+        </Route>
+
+        
 
     </Switch>
 </main>

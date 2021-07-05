@@ -9,14 +9,18 @@ export const OpportunityProvider = (props) => {
   
   const [ opportunities, setOpportunities] = useState([]);
   
+  //searchTerms is the variable declared
+  //setSearchTerms is the function to update the variable searchTerms
+  //the useState hook will hold and set the string of searchTerms
+  const [searchTerms, setSearchTerms] = useState("")
+
   const getAllOpportunities = () => {
-    getToken().then((token) =>
-        fetch(apiUrl, {
+    return fetch(apiUrl, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`
+              "Content-Type": "application/json" 
             }
-        }))
+        })
       .then(resp => resp.json())
       .then(setOpportunities);
   };
@@ -35,13 +39,12 @@ export const OpportunityProvider = (props) => {
   };
 
   const getOpportunityById = (opportunityId) => {
-    return getToken().then((token) =>
-        fetch(`${apiUrl}/${opportunityId}`, {
+    return fetch(`${apiUrl}/${opportunityId}`, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`
+              "Content-Type": "application/json" 
             }
-        }))
+        })
         .then(resp => resp.json())    
   }
 
@@ -73,7 +76,7 @@ export const OpportunityProvider = (props) => {
   };
 
   return (
-    <OpportunityContext.Provider value={{ opportunities, getAllOpportunities, getOpportunityById, addOpportunity, editOpportunity, deleteOpportunity }}>
+    <OpportunityContext.Provider value={{ opportunities, getAllOpportunities, getOpportunityById, addOpportunity, editOpportunity, deleteOpportunity, searchTerms, setSearchTerms }}>
       {props.children}
     </OpportunityContext.Provider>
   );
