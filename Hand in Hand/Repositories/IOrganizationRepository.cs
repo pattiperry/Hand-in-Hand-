@@ -9,7 +9,7 @@ namespace Hand_in_Hand.Repositories
     public interface IOrganizationRepository
     {
         Organization GetByFirebaseUserId(string firebaseUserId);
-        List<Organization> GetAll();
+
         void Add(Organization organization);
         void Edit(Organization organization);
     }
