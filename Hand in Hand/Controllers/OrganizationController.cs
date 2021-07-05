@@ -29,14 +29,7 @@ namespace Hand_in_Hand.Controllers
             return Ok(_organizationRepository.GetByFirebaseUserId(firebaseUserId));
         }
 
-        //This method is for the volunteer page
-        //it gets the full list of all the organizations from the database
-        // GET: api/<OrganizationController>
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            return Ok(_organizationRepository.GetAll());
-        }
+        
 
         // POST api/<OrganizationController>
         [HttpPost]
