@@ -59,10 +59,6 @@ export default function ApplicationViews() {
           <OpportunityList /> 
         </Route>
 
-        {/* <Route path="/opportunity" exact>
-          {isLoggedIn ? <OpportunitySearch /> : <Redirect to="/login"/>}
-        </Route> */}
-
         <Route path="/opportunity/edit/:opportunityId(\d+)" exact>
           {isLoggedIn ? <OpportunityForm /> : <Redirect to="/login"/>}
         </Route>
@@ -75,9 +71,7 @@ export default function ApplicationViews() {
           {<OpportunityDetails /> }
         </Route>
 
-        <Route path="/opportunity/opportunitylist" exact>
-          {!isLoggedIn ? <OpportunityList /> : <Redirect to="/login"/>}
-        </Route>
+        
 
     </Switch>
 </main>

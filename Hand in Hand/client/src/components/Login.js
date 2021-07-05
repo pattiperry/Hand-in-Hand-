@@ -37,7 +37,7 @@ export default function Login() {
         </em>
       </fieldset>
     </Form>
-    <Button variant="success" type="submit" onClick={()=> {history.push("/opportunity/opportunitylist")}}>
+    <Button variant="success" type="submit" onClick={()=> {history.push("/opportunity")}}>
     VOLUNTEER
  </Button>
  </>

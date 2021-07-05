@@ -21,7 +21,9 @@ export const OpportunityList = () => {
   useEffect(() => {
     if (searchTerms !== "") {
       // If the search field is not blank, display matching opportunites
-      const subset = opportunities.filter(currentOpportunity => currentOpportunity.name.toLowerCase().includes(searchTerms))
+      const subset = opportunities.filter(currentOpportunity => currentOpportunity.title.toLowerCase().includes(searchTerms) || 
+      currentOpportunity.content.toLowerCase().includes(searchTerms))
+
       setFilteredOpportunities(subset)
     } else {
       // If the search field is blank, display all opportunities
