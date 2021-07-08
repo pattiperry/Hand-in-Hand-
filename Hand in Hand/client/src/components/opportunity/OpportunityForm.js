@@ -103,23 +103,24 @@ export const OpportunityForm = () => {
 
     return (
         <>
-    <Form>
+    <Form className="opportunity-form">
         <h2 className="opportunityForm__title">New Opportunity</h2>
+        <p></p>
         <Form.Group >
             <Form.Label>Title</Form.Label>
-            <Form.Control type="text" placeholder="Title" id="title" onChange={handleControlledInputChange} value={opportunityFormInput.title}/>   
+            <Form.Control type="text" placeholder="" id="title" onChange={handleControlledInputChange} value={opportunityFormInput.title}/>   
         </Form.Group>
-
+        <p></p>
         <Form.Group >
             <Form.Label>Provide a full description of your opportunity.</Form.Label>
             <Form.Control as="textarea" rows={3} id="content" onChange={handleControlledInputChange} value={opportunityFormInput.content}/>
         </Form.Group>
-
+        <p></p>
         <Form.Group >
             <Form.Label>Location</Form.Label>
             <Form.Control type="text" id="location" onChange={handleControlledInputChange} value={opportunityFormInput.location}/>
         </Form.Group>
-
+        <p></p>
         <Form.Group controlId="formBasicCheckbox">
         <Form.Label>Who is your opportunity best suited for? Check all that apply.</Form.Label>
             <Form.Check type="checkbox" label="Groups" id="suitableForGroups" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForGroups}/>
@@ -132,23 +133,27 @@ export const OpportunityForm = () => {
 
             <Form.Check type="checkbox" label="Participate From Home" id="suitableForParticipateFromHome" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForParticipateFromHome}/>
         </Form.Group>
-
+        <p></p>
         <Form.Group controlId="formBasicCheckbox">
         <Form.Label>Is this an ongoing opportunity? If so please check yes.</Form.Label>
             <Form.Check type="checkbox" label="Yes, ongoing opportunity." id="type" onChange={handleCheckboxClick} value={opportunityFormInput.type}/>
         </Form.Group>
-
+        <p></p>
         <Form.Group >
             <Form.Label>Please provide any additional information that will help volunteers. </Form.Label>
             <Form.Control as="textarea" rows={3} placeholder="Additional Information"id="otherInfo" onChange={handleControlledInputChange} value={opportunityFormInput.otherInfo}/>
         </Form.Group>
+        <p></p>
 
-        <Button variant="primary" type="submit" onClick={handleClickSaveOpportunity} disable={isLoading.toString()}>
+        <div className="button-container">
+        <Button variant="dark" type="submit" onClick={handleClickSaveOpportunity} disable={isLoading.toString()}>
             {opportunityId ? <> Save Opportunity </>:<> Submit Opportunity</>}
         </Button>
-        <Button variant="primary" type="submit" onClick={()=> {history.push("/opportunity")}}>
+        <p></p>
+        <Button variant="dark" type="submit" onClick={()=> {history.push("/opportunity")}}>
            Cancel
         </Button>
+        </div>
     </Form>
 
         

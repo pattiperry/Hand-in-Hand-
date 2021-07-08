@@ -32,21 +32,26 @@ export const OpportunityList = () => {
   }, [searchTerms, opportunities])
 
   return (
-    <div className="card-container">
-      <div >
-      {!isLoggedIn ? <Button variant="dark" onClick={() => history.push("/organization")}>
-            VIEW ALL ORGANIZATIONS
+    
+
+      <div  >
+
+      {!isLoggedIn ? <Button className="search" variant="dark" onClick={() => history.push("/organization")}>
+            VIEW ORGANIZATIONS
         </Button> : <> </> }
-      {isLoggedIn ? <Button variant="dark" onClick={() => history.push("/opportunity/add")}>
+
+      {isLoggedIn ? <Button className="add" variant="dark" onClick={() => history.push("/opportunity/add")}>
             ADD NEW OPPORTUNITY
         </Button> : <> </> }
-        <div className="cards">
+
+        <h1 className="opportunity-title">Opportunities</h1>
+        <div className="card-container">
           {filteredOpportunities.map((opportunity) => (
             <Opportunity key={opportunity.id} opportunity={opportunity} />
           ))}
         </div>
         
       </div>
-    </div>
+  
   );
 };

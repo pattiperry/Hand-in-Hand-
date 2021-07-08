@@ -37,6 +37,7 @@ export default function ApplicationViews() {
         </Route>
 
 {/*----------------Organization Routes----------------- */}
+        <div className="background-picture">
         <Route path="/organization/details" exact>
           {isLoggedIn ? <OrganizationDetail /> : <Redirect to="/login"/>}
         </Route>
@@ -70,7 +71,7 @@ export default function ApplicationViews() {
         <Route path="/opportunity/detail/:opportunityId(\d+)" exact>
           <OpportunityDetails />
         </Route>
-
+        </div>
         
 
     </Switch>

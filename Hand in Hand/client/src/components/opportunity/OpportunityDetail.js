@@ -29,9 +29,9 @@ export const OpportunityDetails = () => {
       
     return (
         <>
-            <Card className="m-8">
+            <Card className="opportunity-detailview">
                 
-                <Card.Title><p className="col-lg-6 col-sm-6"><strong>{detailOpportunity.title}</strong></p></Card.Title>
+                <Card.Header><Card.Title><p className="col-lg-6 col-sm-6"><strong>{detailOpportunity.title}</strong></p></Card.Title></Card.Header>
                 <Card.Body>
                   <p>Description: {detailOpportunity.content}</p>
                   
@@ -63,6 +63,10 @@ export const OpportunityDetails = () => {
       : <div></div>
       }
       </div>
+
+      <Button variant="dark" onClick={() => history.push("/opportunity")}>
+            BACK TO OPPORTUNITIES
+        </Button>
             </Card>
         </>
     )

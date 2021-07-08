@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory} from "react-router-dom";
-import { Card, CardBody, CardHeader, Button, CardLink } from "reactstrap";
+import { CardLink } from "reactstrap";
+import  Card  from 'react-bootstrap/Card';
+import  Button  from 'react-bootstrap/Button';
 //import  Link  from 'react-bootstrap/Link';
 import { OrganizationContext } from "../../providers/OrganizationProvider"
 import "./Organization.css";
@@ -49,18 +51,19 @@ export const OrganizationDetail = () => {
 
     return (
       <>
+      
       <Card className="organization-memo" border="dark" style={{ width: '30rem' }}>
-      <CardBody  >Please keep your organization information up to date. This information will be shared with volunteers in your area.</CardBody>
+      <Card.Body  >Please keep your organization information up to date. This information will be shared with volunteers in your area.</Card.Body>
       </Card>
 
       {!isEditing? 
 
     <Card className="organization-card" border="dark" style={{ width: '30rem' }}>
-        <CardHeader>
+        <Card.Header>
            
         <p><strong>{profile.organizationName}</strong></p>
-        </CardHeader>
-        <CardBody>
+        </Card.Header>
+        <Card.Body>
         
             <p>{profile.location}</p>
             <p>{profile.phone}</p>
@@ -72,15 +75,17 @@ export const OrganizationDetail = () => {
            
           <div className="button-container">
            
-            <Button className="button btn btn-sm" onClick={() => {setIsEditing(true)}}>Edit</Button> 
+            <Button className="button" variant="dark" onClick={() => {setIsEditing(true)}}>Edit</Button> 
           </div>
              
-        </CardBody>
-    </Card> :
+        </Card.Body>
+    </Card>
+     :
+     
     <>
     <p></p>
-    <Card className="organization-card" border="dark" >
-        <CardHeader>
+    <Card className="organization-edit" border="dark" >
+        <Card.Header>
         <input 
          type="text" 
          id="organizationName" 
@@ -90,8 +95,8 @@ export const OrganizationDetail = () => {
          className="form-control" 
          placeholder="OrganizationName" 
          defaultValue={profile.organizationName}/>
-        </CardHeader>
-        <CardBody>
+        </Card.Header>
+        <Card.Body>
         <input 
           type="text" 
           id="url" 
@@ -143,15 +148,15 @@ export const OrganizationDetail = () => {
           defaultValue={profile.contactPerson}/>
             
           <div className="button-container">
-           <Button className="button btn btn-sm"  onClick={handleClickEditOrganization}>Save</Button> 
+           <Button className="button btn "  variant="dark" onClick={handleClickEditOrganization}>Save</Button> 
           </div>
              
-        </CardBody>
+        </Card.Body>
     </Card>
     </>
 }
     </>
-      
+   
   );
 };
 
