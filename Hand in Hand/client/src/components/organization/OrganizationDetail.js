@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory} from "react-router-dom";
-import { Card, CardBody, CardHeader, Button } from "reactstrap";
+import { Card, CardBody, CardHeader, Button, CardLink } from "reactstrap";
+//import  Link  from 'react-bootstrap/Link';
 import { OrganizationContext } from "../../providers/OrganizationProvider"
 import "./Organization.css";
 
@@ -48,19 +49,25 @@ export const OrganizationDetail = () => {
 
     return (
       <>
+      <Card className="organization-memo" border="dark" style={{ width: '30rem' }}>
+      <CardBody  >Please keep your organization information up to date. This information will be shared with volunteers in your area.</CardBody>
+      </Card>
+
       {!isEditing? 
 
-    <Card className="m-8">
+    <Card className="organization-card" border="dark" style={{ width: '30rem' }}>
         <CardHeader>
            
         <p><strong>{profile.organizationName}</strong></p>
         </CardHeader>
         <CardBody>
-            <p>{profile.url}</p>
+        
             <p>{profile.location}</p>
             <p>{profile.phone}</p>
-            <p>{profile.email}</p>
+            <CardLink href="#">{profile.url}</CardLink>
+            
             <p>{profile.contactPerson}</p>
+            <p>{profile.email}</p>
               
            
           <div className="button-container">
@@ -71,8 +78,8 @@ export const OrganizationDetail = () => {
         </CardBody>
     </Card> :
     <>
-    <p> Edit Your Organization</p>
-    <Card className="m-8">
+    <p></p>
+    <Card className="organization-card" border="dark" >
         <CardHeader>
         <input 
          type="text" 

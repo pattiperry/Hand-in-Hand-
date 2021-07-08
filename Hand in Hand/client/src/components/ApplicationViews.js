@@ -68,7 +68,7 @@ export default function ApplicationViews() {
         </Route>
         
         <Route path="/opportunity/detail/:opportunityId(\d+)" exact>
-          {<OpportunityDetails /> }
+          <OpportunityDetails />
         </Route>
 
         

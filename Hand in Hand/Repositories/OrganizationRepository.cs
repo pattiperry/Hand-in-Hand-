@@ -1,7 +1,7 @@
 ﻿using Hand_in_Hand.Models;
 using Hand_in_Hand.Utils;
 using Microsoft.Extensions.Configuration;
-
+using System.Collections.Generic;
 
 namespace Hand_in_Hand.Repositories
 {
@@ -47,7 +47,43 @@ namespace Hand_in_Hand.Repositories
                 }
             }
         }
+        public List<Organization> GetAll()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                      SELECT Id, FirebaseUserId, OrganizationName, Url, Location, Phone, Email, ContactPerson
+                        FROM Organization";
 
+                    var reader = cmd.ExecuteReader();
+
+                    var organizations = new List<Organization>();
+
+                    while (reader.Read())
+                    {
+                        organizations.Add(new Organization()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirebaseUserId = DbUtils.GetString(reader, "FirebaseUserId"),
+                            OrganizationName = DbUtils.GetString(reader, "OrganizationName"),
+                            Url = DbUtils.GetString(reader, "Url"),
+                            Location = DbUtils.GetString(reader, "Location"),
+                            Phone = DbUtils.GetString(reader, "Phone"),
+                            Email = DbUtils.GetString(reader, "Email"),
+                            ContactPerson = DbUtils.GetString(reader, "ContactPerson")
+                        }           
+                            );
+                    }
+
+                    reader.Close();
+
+                    return organizations;
+                }
+            }
+        }
         public void Add(Organization organization)
         {
             using (var conn = Connection)

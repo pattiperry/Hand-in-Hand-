@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { OrganizationContext } from "../../providers/OrganizationProvider"
-import { Organization } from "../organization/Organization"
+import { Organization } from "./Organization"
 
 
 export const OrganizationList = () => {

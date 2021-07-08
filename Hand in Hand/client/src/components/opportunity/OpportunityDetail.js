@@ -30,7 +30,7 @@ export const OpportunityDetails = () => {
     return (
         <>
             <Card className="m-8">
-                <Card.Header> </Card.Header>
+                
                 <Card.Title><p className="col-lg-6 col-sm-6"><strong>{detailOpportunity.title}</strong></p></Card.Title>
                 <Card.Body>
                   <p>Description: {detailOpportunity.content}</p>

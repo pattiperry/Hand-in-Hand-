@@ -1,3 +1,23 @@
+
+
+.organization-memo {
+  margin-top: 3rem;
+  margin-left: 1rem;
+}
+
+.organization-card {
+    margin-top: 3rem;
+    justify-content: center;
+    margin-left: 1rem;
+}
+
+.organizationdetail-component {
+    background-image: url("../Images/holdinghandscircle1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
 /* ----------- Button Styling -------------*/
 .button-container {
     display: flex;
@@ -7,3 +27,4 @@
 .button {
     margin: 0em 0.5em;
 }
+
