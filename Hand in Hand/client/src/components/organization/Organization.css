@@ -22,6 +22,19 @@
     width: 50em;
 }
 
+.organization-profile {
+    margin: auto;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+}
+
+.top-margin {
+    margin-top: 10vh;
+}
+
 /* ----------- this styling is for the volunteer view of the organization list-------------*/
 .organization-title{
     text-align: center;

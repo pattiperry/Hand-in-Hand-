@@ -25,21 +25,36 @@
 /* ----------- this styling is for the detail view of an opportunity-------------*/
 
 .opportunity-detailview {
-    width: 40em;
-  margin-top: 2em, 2em, 2em, 2em;
+    margin: auto;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    
+}
+
+.top-margin {
+    margin-top: 10vh;
 }
 
 /* ----------- this styling is for the opportunity form-------------*/
 
 .opportunity-form {
-    width: 50em;
+    
     border: 2px solid black;
-    margin-top: 2rem, 0, 0, 1rem;
+    
     background-color: white;
+    margin: auto;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    width: 35vw;
 }
 
-.button-container {
+/* .button-container {
     display: flex;
     flex-wrap: flex;
     justify-content: space-between;
-}
+} */

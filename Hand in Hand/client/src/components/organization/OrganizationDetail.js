@@ -56,7 +56,8 @@ export const OrganizationDetail = () => {
 
     return (
       <>
-      
+      <div className= "organization-profile" >
+        <div className= "top-margin">
       <Card className="organization-memo" border="dark" style={{ width: '30rem' }}>
       <Card.Body  >Please keep your organization information up to date. This information will be shared with volunteers in your area.</Card.Body>
       </Card>
@@ -162,6 +163,8 @@ export const OrganizationDetail = () => {
     </Card>
     </>
 }
+</div>
+</div>
     </>
    
   );

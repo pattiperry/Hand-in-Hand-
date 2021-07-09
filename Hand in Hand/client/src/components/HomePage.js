@@ -2,6 +2,7 @@ import React from "react";
 
 export default function Hello() {
   return (
+    <>
     <span style={{
       position: "fixed",
       left: 0,
@@ -9,6 +10,9 @@ export default function Hello() {
       top: "50%",
       marginTop: "-0.5rem",
       textAlign: "center",
-    }}>Welcome to Hand In Hand</span>
+    }}>Welcome to Hand In Hand
+    <p>Bringing Communities Closer Together Through Acts of Service</p></span>
+    
+    </>
   );
 }

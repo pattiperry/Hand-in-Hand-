@@ -57,63 +57,69 @@ export const OpportunityDetails = () => {
       .then(setDetailOpportunity)
     }, [])
 
-    const loggedInOrganization = 0
+    let loggedInOrganization = 0
 
     if(sessionStorage.getItem("organization") !== null){
-      const loggedInOrganization = JSON.parse(sessionStorage.getItem("organization")).id;
+      loggedInOrganization = JSON.parse(sessionStorage.getItem("organization")).id;
     }
      
-    
-    
-    
-    
       
     return (
         <>
-            <Card className="opportunity-detailview">
+        <div className="opportunity-detailview">
+        <div className="top-margin">
+            <Card >
                 
                 <Card.Header><Card.Title><p className="col-lg-6 col-sm-6"><strong>{detailOpportunity.title}</strong></p></Card.Title></Card.Header>
                 <Card.Body>
                   <p>{detailOpportunity.content}</p>
                   
                   <MdDomain />{detailOpportunity.location}<p></p>
-                  <p>This opportunity is suitable for the following:
-                  <MdGroup />{detailOpportunity.suitableForGroups}
-                  <MdPersonOutline />{detailOpportunity.suitableForIndividuals}
-                  <MdWarning />{detailOpportunity.suitableForAdultsOnly}
-                  <MdChildFriendly />{detailOpportunity.suitableForAllAges}
-                  <MdHome />{detailOpportunity.suitableForParticipateFromHome}</p>
-                  
-                  <p>{detailOpportunity.type}</p>
+                  <p>
+                  This opportunity is suitable for the following:&nbsp;&nbsp;
+                  {detailOpportunity.suitableForGroups? <MdGroup /> : <></>}&nbsp;&nbsp;
+                  {detailOpportunity.suitableForIndividuals ? <MdPersonOutline/> : <></>}&nbsp;&nbsp;
+                  {detailOpportunity.suitableForAdultsOnly ? <MdWarning/> : <></>}&nbsp;&nbsp;
+                  {detailOpportunity.suitableForAllAges ? <MdChildFriendly/> : <></>}&nbsp;&nbsp;
+                  {detailOpportunity.suitableForParticipateFromHome ? <MdHome /> : <></>}&nbsp;&nbsp;
+                  </p>
+
+                  This is <strong>{detailOpportunity.type ? "an ongoing opportunity" : "a one time project"}</strong>.<p></p>
+
                   <p>Additional Information: {detailOpportunity.otherInfo}</p>
 
                   <p></p>
                   <p></p>
                   {detailOpportunity.organization?.organizationName}<p></p>
                   
-                  <MdPerson />{detailOpportunity.organization?.contactPerson}
-                  <MdPhone />{detailOpportunity.organization?.phone}
-                  <MdEmail />   {detailOpportunity.organization?.email}
-                  <MdLaptop /><CardLink href="#">{detailOpportunity.organization?.url}</CardLink><p></p>
+                  <p>
+                  <MdPerson />{detailOpportunity.organization?.contactPerson}&nbsp;&nbsp;
+                  <MdPhone />{detailOpportunity.organization?.phone}&nbsp;&nbsp;
+                  <MdEmail />   {detailOpportunity.organization?.email}&nbsp;&nbsp;
+                  <MdLaptop /><CardLink href="#">{detailOpportunity.organization?.url}</CardLink></p>
                     {/* ? prevents error, as on first load, this info will not yet be defined */}
                 </Card.Body>
-
+              
                 <div className="button-container">
-      {loggedInOrganization === detailOpportunity.organizationId
-        ? <Button className="button btn btn-sm" onClick={() => {history.push(`/opportunity/edit/${detailOpportunity.id}`)}}>Edit</Button> 
-        : <div></div>
-      }
+                {loggedInOrganization === detailOpportunity.organizationId
+                ? <Button variant="dark" className="button" onClick={() => {history.push(`/opportunity/edit/${detailOpportunity.id}`)}}>Edit</Button> 
+                : <div></div>
+                }
        
-      {loggedInOrganization === detailOpportunity.organizationId
-      ? <Button className="button btn btn-sm" onClick={() => {history.push(`/opportunity/delete/${detailOpportunity.id}`)}}>Delete</Button> 
-      : <div></div>
-      }
-      </div>
+                {loggedInOrganization === detailOpportunity.organizationId
+                ? <Button variant="dark" className="button" onClick={() => {history.push(`/opportunity/delete/${detailOpportunity.id}`)}}>Delete</Button> 
+                : <div></div>
+                }
 
-      <Button variant="dark" onClick={() => history.push("/opportunity")}>
-            BACK TO OPPORTUNITIES
-        </Button>
-            </Card>
+                <Button variant="dark" onClick={() => history.push("/opportunity")}>
+                BACK TO OPPORTUNITIES
+                </Button>
+                </div>
+
+               
+              </Card>
+              </div>
+              </div>
         </>
     )
 }
