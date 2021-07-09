@@ -22,7 +22,7 @@ export const OpportunityList = () => {
     if (searchTerms !== "") {
       // If the search field is not blank, display matching opportunites
       const subset = opportunities.filter(currentOpportunity => currentOpportunity.title.toLowerCase().includes(searchTerms) || 
-      currentOpportunity.content.toLowerCase().includes(searchTerms))
+      currentOpportunity.content.toLowerCase().includes(searchTerms) || currentOpportunity.location.toLowerCase().includes(searchTerms))
 
       setFilteredOpportunities(subset)
     } else {

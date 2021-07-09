@@ -5,6 +5,11 @@ import  Card  from 'react-bootstrap/Card';
 import  Button  from 'react-bootstrap/Button';
 //import  Link  from 'react-bootstrap/Link';
 import { OrganizationContext } from "../../providers/OrganizationProvider"
+import { MdPerson } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
+import { MdPhone } from "react-icons/md";
+import { MdDomain } from "react-icons/md";
+import { MdLaptop } from "react-icons/md";
 import "./Organization.css";
 
 export const OrganizationDetail = () => {
@@ -65,12 +70,14 @@ export const OrganizationDetail = () => {
         </Card.Header>
         <Card.Body>
         
-            <p>{profile.location}</p>
-            <p>{profile.phone}</p>
-            <CardLink href="#">{profile.url}</CardLink>
-            
-            <p>{profile.contactPerson}</p>
-            <p>{profile.email}</p>
+        <MdDomain />{profile.location}
+        <p></p>
+        <MdPhone />{profile.phone}
+        <p></p>
+        <MdLaptop /><CardLink href="#">{profile.url}</CardLink>
+        <p></p>
+        <MdPerson />{profile.contactPerson}<p></p>
+        <MdEmail />   {profile.email}<p></p>
               
            
           <div className="button-container">

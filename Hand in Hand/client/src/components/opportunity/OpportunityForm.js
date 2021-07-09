@@ -3,6 +3,12 @@ import { OpportunityContext } from "../../providers/OpportunityProvider"
 import { useHistory, useParams } from 'react-router-dom';
 import  Button  from 'react-bootstrap/Button';
 import  Form  from 'react-bootstrap/Form';
+import { MdGroup } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
+import { MdChildFriendly } from "react-icons/md";
+import { MdWarning } from "react-icons/md";
+import { MdHome } from "react-icons/md";
+import { MdDomain } from "react-icons/md";
 import "./Opportunity.css";
 
 
@@ -117,21 +123,21 @@ export const OpportunityForm = () => {
         </Form.Group>
         <p></p>
         <Form.Group >
-            <Form.Label>Location</Form.Label>
+            <Form.Label>Location</Form.Label><MdDomain/>
             <Form.Control type="text" id="location" onChange={handleControlledInputChange} value={opportunityFormInput.location}/>
         </Form.Group>
         <p></p>
         <Form.Group controlId="formBasicCheckbox">
         <Form.Label>Who is your opportunity best suited for? Check all that apply.</Form.Label>
-            <Form.Check type="checkbox" label="Groups" id="suitableForGroups" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForGroups}/>
+            <Form.Check type="checkbox"  label={`Groups ${<MdGroup/>}`} id="suitableForGroups" onChange={handleCheckboxClick}  value={opportunityFormInput.suitableForGroups}/>
 
-            <Form.Check type="checkbox" label="Individuals" id="suitableForIndividuals" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForIndividuals}/>
+            <Form.Check type="checkbox" label="Individuals" id="suitableForIndividuals" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForIndividuals}/><MdPerson/>
 
-            <Form.Check type="checkbox" label="All Ages" id="suitableForAllAges" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForAllAges}/>
+            <Form.Check type="checkbox" label="All Ages" id="suitableForAllAges" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForAllAges}/><MdChildFriendly/>
 
-            <Form.Check type="checkbox" label="Adults Only" id="suitableForAdultsOnly" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForAdultsOnly}/>
+            <Form.Check type="checkbox" label="Adults Only" id="suitableForAdultsOnly" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForAdultsOnly}/><MdWarning/>
 
-            <Form.Check type="checkbox" label="Participate From Home" id="suitableForParticipateFromHome" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForParticipateFromHome}/>
+            <Form.Check type="checkbox" label="Participate From Home" id="suitableForParticipateFromHome" onChange={handleCheckboxClick} value={opportunityFormInput.suitableForParticipateFromHome}/><MdHome/>
         </Form.Group>
         <p></p>
         <Form.Group controlId="formBasicCheckbox">

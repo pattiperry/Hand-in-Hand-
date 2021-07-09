@@ -20,10 +20,7 @@ export default function ApplicationViews() {
     <main>
       {/* Use a Switch to provide and handle different routing options within the App */}
       <Switch>
-        {/* Define the Home path as "/". Use the isLoggedIn state variable to manage what the user sees based on their login status. If they are logged in,display a welcome message. If not, redirect them to the login page*/}
-        <Route path="/" exact>
-          {isLoggedIn ? <Hello /> : <Redirect to="/login" />}
-        </Route>
+        
  
  {/*----------------Authentication Routes----------------- */}
         {/* Define the Login path as "/login". */}
@@ -73,6 +70,12 @@ export default function ApplicationViews() {
         </Route>
         </div>
         
+{/* Define the Home path as "/". Use the isLoggedIn state variable to manage what the user sees based on their login status. If they are logged in,display a welcome message. If not, redirect them to the login page*/}
+<Route path="/" exact>
+          {isLoggedIn ? <Hello /> : <Redirect to="/login" />}
+        </Route>
+
+
 
     </Switch>
 </main>
