@@ -4,7 +4,7 @@
     background-image: url("../Images/coolhands.png");
     background-position: bottom; 
   background-repeat: no-repeat; /* Do not repeat the image */
-  background-size: cover; /* Resize the background image to cover the entire container */
+  background-size: cover; 
 
 }
 
